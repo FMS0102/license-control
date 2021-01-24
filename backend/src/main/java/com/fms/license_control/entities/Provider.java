@@ -4,21 +4,49 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import com.fms.license_control.entities.enums.Supply;
 
+@Entity
+@Table(name = "tb_provider")
 public class Provider implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private Long cnpj;
 	private String email;
-	private Integer number;
+	private Long number;
 	private Supply supply;
 
+	@ManyToMany
+	@JoinTable(name = "tb_provider_activity", joinColumns = @JoinColumn(name = "provider_id"), inverseJoinColumns = @JoinColumn(name = "critical_activity_id"))
 	private Set<CriticalActivity> activities = new HashSet<>();
 
 	public Provider() {
+	}
+
+	public Provider(Long id, String name, Long cnpj, String email, Long number, Supply supply,
+			Set<CriticalActivity> activities) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.cnpj = cnpj;
+		this.email = email;
+		this.number = number;
+		this.supply = supply;
+		this.activities = activities;
 	}
 
 	public Long getId() {
@@ -53,11 +81,11 @@ public class Provider implements Serializable {
 		this.email = email;
 	}
 
-	public Integer getNumber() {
+	public Long getNumber() {
 		return number;
 	}
 
-	public void setNumber(Integer number) {
+	public void setNumber(Long number) {
 		this.number = number;
 	}
 

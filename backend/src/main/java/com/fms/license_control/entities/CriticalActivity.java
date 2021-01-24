@@ -4,15 +4,31 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import com.fms.license_control.entities.enums.CriticalType;
 
+@Entity
+@Table(name = "tb_critical_activity")
 public class CriticalActivity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String activityName;
 	private CriticalType criticalType;
 
+	@ManyToMany
+	@JoinTable(name = "tb_activity_license", joinColumns = @JoinColumn(name = "critical_activity_id"), inverseJoinColumns = @JoinColumn(name = "license_id"))
 	private List<License> licenses = new ArrayList<>();
 
 	public CriticalActivity() {
