@@ -1,40 +1,37 @@
-package com.fms.license_control.entities;
+package com.fms.license_control.dto;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import com.fms.license_control.entities.License;
 import com.fms.license_control.entities.enums.LicenseStatus;
 
-@Entity
-@Table(name = "tb_license")
-public class License implements Serializable {
+public class LicenseDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String licenseName;
 	private Date issueDate;
 	private Date dueDate;
 	private LicenseStatus licenseStatus;
 
-	public License() {
+	public LicenseDTO() {
 	}
 
-	public License(Long id, String licenseName, Date issueDate, Date dueDate, LicenseStatus licenseStatus) {
-		super();
+	public LicenseDTO(Long id, String licenseName, Date issueDate, Date dueDate, LicenseStatus licenseStatus) {
 		this.id = id;
 		this.licenseName = licenseName;
 		this.issueDate = issueDate;
 		this.dueDate = dueDate;
 		this.licenseStatus = licenseStatus;
+	}
+
+	public LicenseDTO(License entity) {
+		id = entity.getId();
+		licenseName = entity.getLicenseName();
+		issueDate = entity.getIssueDate();
+		dueDate = entity.getDueDate();
+		licenseStatus = entity.getLicenseStatus();
 	}
 
 	public Long getId() {
@@ -89,7 +86,7 @@ public class License implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		License other = (License) obj;
+		LicenseDTO other = (LicenseDTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
